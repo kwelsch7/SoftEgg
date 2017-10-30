@@ -12,13 +12,19 @@ public class CoordinatesWorld {
     //public static final CoordinatesWorld KSKA;
     public static final double METERS_PER_NAUTICAL_MILE = 1852.0;
 
-    public CoordinatesWorld(Latitude latitude, Longitude longitude) {
+    private Latitude latitude;
+    private Longitude longitude;
 
+    public CoordinatesWorld(Latitude latitude, Longitude longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public CoordinatesWorld add(CoordinatesWorld coordinates) {
         // Adds world coordinates to this one and returns a new one with the sum.
-        return null;
+        Latitude newLatitude = this.latitude.add(coordinates.latitude);
+        Longitude newLongitude = this.longitude.add(coordinates.longitude);
+        return new CoordinatesWorld(newLatitude, newLongitude);
     }
 
     public static CoordinatesWorld build(int latitudeDegrees,
@@ -28,11 +34,14 @@ public class CoordinatesWorld {
                                          int longitudeMinutes,
                                          double longitudeSeconds) {
         // Builds coordinates based on the primitive arguments instead of the datatypes in the constructor.
-        return null;
+        Latitude latitude = new Latitude(latitudeDegrees, latitudeMinutes, latitudeSeconds);
+        Longitude longitude = new Longitude(longitudeDegrees, longitudeMinutes, longitudeSeconds);
+        return new CoordinatesWorld(latitude, longitude);
     }
 
     public Angle calculateBearing(CoordinatesWorld target) {
         // Calculates the angle from these coordinates to another.
+        // REFERENCE: https://www.movable-type.co.uk/scripts/latlong.html
         return null;
     }
 
@@ -61,17 +70,13 @@ public class CoordinatesWorld {
         return 0.0;
     }
 
-    public Latitude getLatitude() {
-        return null;
-    }
+    public Latitude getLatitude() { return this.latitude; }
 
-    public Longitude getLongitude() {
-        return null;
-    }
+    public Longitude getLongitude() { return this.longitude; }
 
     public String getPrettyForm() {
         // Generates the string representation of this position from the pretty representations of the latitude and longitude.
-        return "";
+        return toString();
     }
 
     public CoordinatesWorld subtract(CoordinatesWorld coordinates) {
@@ -79,13 +84,16 @@ public class CoordinatesWorld {
         return null;
     }
 
-    public String toString() { return ""; }
+    public String toString() {
+        return "Latitude: " + this.latitude.getDegrees() + "°" + this.latitude.getMinutes() + "'" + this.latitude.getSeconds() + "\""
+                + " Longitude: " + this.longitude.getDegrees() + "°" + this.longitude.getMinutes() + "'" + this.longitude.getSeconds() + "\"";
+    }
 
     public String toStringNMEA(boolean isHeaderRow) {
         /*
         Generates the NMEA string as follows:
         latitude.convertToNMEA(),longitude.convertToNMEA()
          */
-        return "";
+        return "Latitude: " + latitude.convertToNMEA() + " Longitude: " + longitude.convertToNMEA();
     }
 }

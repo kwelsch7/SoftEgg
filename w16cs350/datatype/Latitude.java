@@ -18,17 +18,23 @@ public class Latitude extends A_LatitudeLongitude {
 
     public Latitude add(Latitude latitude) {
         // Adds a latitude to this one and returns a new one with the sum.
-        return null;
+        int newDegrees = this.degrees + latitude.degrees;
+        int newMinutes = this.minutes + latitude.minutes;
+        double newSeconds = this.seconds + latitude.seconds;
+        return new Latitude(newDegrees, newMinutes, newSeconds);
     }
 
     public int compareTo(Latitude latitude) {
-        return 0;
+        return super.compareTo(latitude);
     }
 
     public Latitude subtract(Latitude latitude) {
         // Subtracts a latitude from this one and returns a new one with the difference.
-        return null;
+        int newDegrees = this.degrees - latitude.degrees;
+        int newMinutes = this.minutes - latitude.minutes;
+        double newSeconds = this.seconds - latitude.seconds;
+        return new Latitude(newDegrees, newMinutes, newSeconds);
     }
 
-    public String toString() { return ""; }
+    public String toString() { return super.toString(); }
 }

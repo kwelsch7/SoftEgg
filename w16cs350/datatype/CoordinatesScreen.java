@@ -17,12 +17,16 @@ public class CoordinatesScreen {
 
     public CoordinatesScreen add(CoordinatesScreen coordinates) {
         // Adds screen coordinates to this one and returns a new one with the sum.
-        return null;
+        int newX = this.x + coordinates.x;
+        int newY = this.y + coordinates.y;
+        return new CoordinatesScreen(newX, newY);
     }
 
     public CoordinatesScreen getHalf() {
         // Returns the midpoint between (0,0) and these coordinates as new screen coordinates.
-        return null;
+        int halfX = this.x / 2;
+        int halfY = this.y / 2;
+        return new CoordinatesScreen(halfX, halfY);
     }
 
     public int getX() { return this.x; }
@@ -41,8 +45,10 @@ public class CoordinatesScreen {
 
     public CoordinatesScreen subtract(CoordinatesScreen coordinates) {
         // Subtracts screen coordinates from this one and returns a new one with the difference.
-        return null;
+        int newX = this.x - coordinates.x;
+        int newY = this.y - coordinates.y;
+        return new CoordinatesScreen(newX, newY);
     }
 
-    public String toString() { return "X:" + this.x + ",Y:" + this.y; }
+    public String toString() { return "X:" + this.x + ", Y:" + this.y; }
 }

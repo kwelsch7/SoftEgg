@@ -23,80 +23,94 @@ public abstract class A_LatitudeLongitude implements Comparable<A_LatitudeLongit
 
     public double calculateDistanceMeters(A_LatitudeLongitude target) {
         // Calculates the the distance in meters between these coordinates and a target.
-        return 0.0;
+        return calculateDistanceNauticalMiles(target) * METERS_PER_NAUTICAL_MILE;
     }
 
     public double calculateDistanceNauticalMiles(A_LatitudeLongitude target) {
         // Calculates the the distance in nautical miles between these coordinates and a target.
-        return 0.0;
+        // Note: 1 nautical mile == 1 minute
+        double degreeMinutes = (this.degrees - target.degrees) * MINUTES_PER_DEGREE;
+        double distanceMinutes = this.minutes - target.minutes;
+        double secondMinutes = (this.seconds - target.seconds) / SECONDS_PER_MINUTE;
+        double totalMinutes = degreeMinutes + distanceMinutes + secondMinutes;
+        return totalMinutes;
     }
 
     public int compareTo(A_LatitudeLongitude coordinates) {
         // Compares these coordinates to another by NMEA encoding to the thousandths place.
-        return 0;
+        // This method is not required
+        int result = this.degrees - coordinates.degrees;
+        if (result == 0) {
+            result = this.minutes = coordinates.minutes;
+            if (result == 0) {
+                result = (int)(this.seconds * 1000) - (int)(coordinates.seconds * 1000);
+            }
+        }
+        return result;
     }
 
     public static int convertToDegrees(double nmea) {
         // Extracts the degrees component of a NMEA encoding.
-        return 0;
+        return (int)(nmea / 100);
     }
 
     public static int convertToMinutes(double nmea) {
         // Extracts the minutes component of a NMEA encoding.
-        return 0;
+        return (int)(nmea % 100);
     }
 
     public static double convertToNauticalMiles(int degrees, int minutes, double seconds) {
         // Converts a DMS encoding to NMEA.
+        // NOT IMPLEMENTING
         return 0.0;
     }
 
     public double convertToNMEA() {
         // Converts this position to NMEA encoding.
-        return 0.0;
+        return convertToNMEA(this.degrees, this.minutes, this.seconds);
     }
 
     public static double convertToNMEA(int degrees, int minutes, double seconds) {
         // Converts a DMS encoding to NMEA.
-        return 0.0;
+        return ((degrees * 100) + minutes + (seconds / 60));
     }
 
     public static double convertToSeconds(double nmea) {
         // Extracts the seconds component of a NMEA encoding.
-        return 0.0;
+        return (nmea % 1) * 60;
     }
 
     public boolean equals(Object coordinates) {
         // Compares these coordinates to another.
-        return false;
+        // This method is not required
+        if (!(coordinates instanceof A_LatitudeLongitude)) {
+            return false;
+        }
+        if (coordinates == this) {
+            return true;
+        }
+        return this.degrees == ((A_LatitudeLongitude) coordinates).degrees
+                && this.minutes == ((A_LatitudeLongitude) coordinates).minutes
+                && this.seconds == ((A_LatitudeLongitude) coordinates).seconds;
     }
 
-    public int getDegrees() {
-        // Gets the degrees component.
-        return 0;
-    }
+    public int getDegrees() { return this.degrees; }
 
-    public int getMinutes() {
-        // Gets the minutes component.
-        return 0;
-    }
+    public int getMinutes() { return this.minutes; }
 
     public String getPrettyForm() {
         // Generates the string representation of this position.
-        return "";
+        return toString();
     }
 
-    public double getSeconds() {
-        // Gets the seconds component.
-        return 0.0;
-    }
+    public double getSeconds() { return this.seconds; }
 
     public int hashCode() {
         // Computes the hash code for these coordinates.
-        return 0;
+        return super.hashCode();
     }
 
     public String toString() {
-        return "";
+        return this.degrees + "°" + this.minutes + "'" + this.seconds + "\"";
     }
 }

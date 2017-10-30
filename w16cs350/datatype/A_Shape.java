@@ -18,6 +18,7 @@ public abstract class A_Shape {
         this.reference = reference;
         this.deltaStart = deltaStart;
         this.deltaEnd = deltaEnd;
+        index = -1;
     }
 
     public A_Shape(CoordinatesWorld reference,
@@ -32,44 +33,51 @@ public abstract class A_Shape {
 
     public CoordinatesDelta getDeltaEnd() {
         // Gets the delta position of the end of the path.
-        return deltaEnd;
+        return this.deltaEnd;
     }
 
     public CoordinatesDelta getDeltaStart() {
         // Gets the delta position of the start of the path.
-        return deltaStart;
+        return this.deltaStart;
     }
 
     public int getIndex() {
         // Gets the optional index.
-        return index;
+        return this.index;
     }
 
     public abstract double getLength(); // Gets the path length.
 
     public CoordinatesWorld getReference() {
         // Gets the reference coordinates.
-        return reference;
+        return this.reference;
     }
 
     public CoordinatesWorld getWorldEnd() {
         // Gets the world coordinates corresponding to the delta coordinates for the end of the path.
-        return null;
+        return reference.calculateTarget(this.deltaEnd);
     }
 
     public CoordinatesWorld getWorldStart() {
         // Gets the world coordinates corresponding to the delta coordinates for the start of the path.
-        return null;
+        return reference.calculateTarget(this.deltaStart);
     }
 
     public boolean hasIndex() {
         // gets whether there is an index.
-        return false;
+        return this.index != -1;
     }
 
     public abstract CoordinatesDelta interpolateDelta(double distance, boolean isFromAOrB); // Interpolates delta coordinates along the path.
 
-    public abstract CoordinatesWorld interpolateWorld(double distance, boolean isFromAOrB); // Interpolates world coordinates along the path.
+    public CoordinatesWorld interpolateWorld(double distance, boolean isFromAOrB) {
+        // Interpolates world coordinates along the path.
+        if (!isOnPath(distance)) {
+            throw new RuntimeException();
+        }
+        CoordinatesDelta delta = interpolateDelta(distance, isFromAOrB);
+        return reference.calculateTarget(delta);
+    }
 
     public abstract boolean isOnPath(double distance); // Determines whether a point at a distance from either end of this shape within the limits.
 

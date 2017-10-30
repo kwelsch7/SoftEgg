@@ -41,33 +41,53 @@ public class CoordinatesWorld {
 
     public Angle calculateBearing(CoordinatesWorld target) {
         // Calculates the angle from these coordinates to another.
-        // REFERENCE: https://www.movable-type.co.uk/scripts/latlong.html
-        return null;
+        // REFERENCE: https://math.stackexchange.com/questions/1596513/find-the-bearing-angle-between-two-points-in-a-2d-space
+        double theta = Math.atan2((target.longitude.convertToNMEA() - this.longitude.convertToNMEA()), (target.latitude.convertToNMEA() - this.latitude.convertToNMEA()));
+        if (theta < 0.0) {
+            theta += (Math.PI * 2);
+        }
+        return new Angle(Math.toDegrees(theta));
     }
 
     public double calculateDistanceMeters(CoordinatesWorld target) {
         // Calculates the distance in meters from these coordinates to another.
-        return 0.0;
+        double longitudePortion = Math.pow((this.longitude.convertToNMEA() - target.longitude.convertToNMEA()), 2);
+        double latitudePortion = Math.pow((this.latitude.convertToNMEA() - target.latitude.convertToNMEA()), 2);
+        double sum = longitudePortion + latitudePortion;
+        return Math.sqrt(sum);
     }
 
     public double calculateDistanceNauticalMiles(CoordinatesWorld target) {
         // Calculates the distance in nautical miles from these coordinates to another.
-        return 0.0;
+        return calculateDistanceMeters(target) / METERS_PER_NAUTICAL_MILE;
     }
 
     public CoordinatesWorld calculateTarget(Angle bearing, double distance) {
         // Calculates the target coordinates that lie at a given distance and bearing from these coordinates.
-        return null;
+        // REFERENCE: http://classroom.synonym.com/coordinates-distances-angles-2732.html
+        double angle = bearing.getValue();
+        double targetLongitude = this.longitude.convertToNMEA() + (Math.cos(angle) * distance);
+        double targetLatitude = this.latitude.convertToNMEA() + (Math.sin(angle) * distance);
+        return CoordinatesWorld.build(
+                Latitude.convertToDegrees(targetLatitude),
+                Latitude.convertToMinutes(targetLatitude),
+                Latitude.convertToSeconds(targetLatitude),
+                Longitude.convertToDegrees(targetLongitude),
+                Longitude.convertToMinutes(targetLongitude),
+                Longitude.convertToSeconds(targetLongitude)
+        );
     }
 
     public CoordinatesWorld calculateTarget(CoordinatesDelta delta) {
         // Calculates the world coordinates the lie at a given offset from these coordinates.
-        return null;
+        Latitude targetLatitude = this.latitude.add(new Latitude(delta.getY()));
+        Longitude targetLongitude = this.longitude.add(new Longitude((delta.getX())));
+        return new CoordinatesWorld(targetLatitude, targetLongitude);
     }
 
     public static double convertMetersToNauticalMiles(double meters) {
         // Converts from meters to nautical miles.
-        return 0.0;
+        return meters / METERS_PER_NAUTICAL_MILE;
     }
 
     public Latitude getLatitude() { return this.latitude; }
@@ -81,7 +101,9 @@ public class CoordinatesWorld {
 
     public CoordinatesWorld subtract(CoordinatesWorld coordinates) {
         // Subtracts world coordinates from this one and returns a new one with the difference.
-        return null;
+        Latitude newLatitude = this.latitude.subtract(coordinates.latitude);
+        Longitude newLongitude = this.longitude.subtract(coordinates.longitude);
+        return new CoordinatesWorld(newLatitude, newLongitude);
     }
 
     public String toString() {

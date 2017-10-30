@@ -12,7 +12,7 @@ public class CoordinatesScreen {
     public CoordinatesScreen(int x, int y) {
         this.x = x;
         this.y = y;
-        this.isVisible = true;
+        this.isVisible = false;
     }
 
     public CoordinatesScreen add(CoordinatesScreen coordinates) {

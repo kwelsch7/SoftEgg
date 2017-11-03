@@ -1,3 +1,4 @@
+/* Konnor Welsch - CS 350 */
 package w16cs350.datatype;
 
 /*
@@ -18,6 +19,9 @@ public class Longitude extends A_LatitudeLongitude {
 
     public Longitude add(Longitude longitude) {
         // Adds a longitude to this one and returns a new one with the sum.
+        if(longitude == null) {
+            throw new RuntimeException("Null longitude passed to Longitude.add");
+        }
         int newDegrees = this.degrees + longitude.degrees;
         int newMinutes = this.minutes + longitude.minutes;
         double newSeconds = this.seconds + longitude.seconds;
@@ -25,11 +29,17 @@ public class Longitude extends A_LatitudeLongitude {
     }
 
     public int compareTo(Longitude longitude) {
+        if(longitude == null) {
+            throw new RuntimeException("Null longitude passed to Longitude.compareTo");
+        }
         return super.compareTo(longitude);
     }
 
     public Longitude subtract(Longitude longitude) {
         // Subtracts a longitude from this one and returns a new one with the difference.
+        if(longitude == null) {
+            throw new RuntimeException("Null longitude passed to Longitude.subtract");
+        }
         int newDegrees = this.degrees - longitude.degrees;
         int newMinutes = this.minutes - longitude.minutes;
         double newSeconds = this.seconds - longitude.seconds;

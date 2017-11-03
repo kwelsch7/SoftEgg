@@ -5,12 +5,20 @@ import w16cs350.datatype.*;
 public class Main {
 
     public static void main(String[] args) {
-        Latitude latitude = new Latitude(12345.6);
-        Longitude longitude = new Longitude(12345.6);
-        CoordinatesDelta coordinatesDelta = new CoordinatesDelta(15.0, 0.0);
-        CoordinatesWorld coordinatesWorld = new CoordinatesWorld(latitude, longitude);
-        CoordinatesScreen coordinatesScreen = new CoordinatesScreen(6, 70);
-        Angle angle = new Angle(75.0);
-        ShapeLine shapeLine = new ShapeLine(coordinatesWorld, coordinatesDelta, coordinatesDelta);
+        CoordinatesDelta coordinatesDelta = new CoordinatesDelta(10, 20);
+        Angle angle = new Angle(45);
+
+        CoordinatesDelta target = coordinatesDelta.calculateTarget(angle, 28.284271247461902);
+
+        System.out.println(target);
+
+
+//        Latitude latitude = new Latitude(115.45);
+//        Longitude longitude = new Longitude(314.56);
+//        CoordinatesWorld world = new CoordinatesWorld(latitude, longitude);
+//        Angle angle = new Angle(60);
+//
+//        CoordinatesWorld target = world.calculateTarget(angle, 28.284271247461902);
+//        System.out.println(target.toStringNMEA(true));
     }
 }

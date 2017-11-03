@@ -1,3 +1,4 @@
+/* Konnor Welsch - CS 350 */
 package w16cs350.datatype;
 
 public class ShapeLine extends A_Shape {
@@ -16,16 +17,22 @@ public class ShapeLine extends A_Shape {
 
     public CoordinatesDelta interpolateDelta(double distance, boolean isFromAOrB) {
         // Interpolates delta coordinates along the path.
+        // https://math.stackexchange.com/questions/2045174/how-to-find-a-point-between-two-points-with-given-distance
         if (!isOnPath(distance)) {
             throw new RuntimeException();
         }
-        Angle bearing = this.deltaStart.calculateBearing(this.deltaEnd);
-        if(isFromAOrB) {
-            return deltaStart.calculateTarget(bearing, distance);
+
+        double totalDistance = this.deltaStart.calculateDistance(this.deltaEnd);
+        double xPortion, yPortion;
+        if (isFromAOrB) {
+            xPortion = this.deltaStart.getX() + distance / totalDistance * (this.deltaEnd.getX() - this.deltaStart.getX());
+            yPortion = this.deltaStart.getY() + distance / totalDistance * (this.deltaEnd.getY() - this.deltaStart.getY());
         }
         else {
-            return deltaEnd.calculateTarget(bearing, distance);
+            xPortion = this.deltaEnd.getX() + distance / totalDistance * (this.deltaStart.getX() - this.deltaEnd.getX());
+            yPortion = this.deltaEnd.getY() + distance / totalDistance * (this.deltaStart.getY() - this.deltaEnd.getY());
         }
+        return new CoordinatesDelta(xPortion, yPortion);
     }
 
     public boolean isOnPath(double distance) {

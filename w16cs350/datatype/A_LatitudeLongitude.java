@@ -1,3 +1,4 @@
+/* Konnor Welsch - CS 350 */
 package w16cs350.datatype;
 
 /*
@@ -23,22 +24,31 @@ public abstract class A_LatitudeLongitude implements Comparable<A_LatitudeLongit
 
     public double calculateDistanceMeters(A_LatitudeLongitude target) {
         // Calculates the the distance in meters between these coordinates and a target.
+        if(target == null) {
+            throw new RuntimeException("Null target passed to A_LatitudeLongitude.calculateDistanceMeters");
+        }
         return calculateDistanceNauticalMiles(target) * METERS_PER_NAUTICAL_MILE;
     }
 
     public double calculateDistanceNauticalMiles(A_LatitudeLongitude target) {
         // Calculates the the distance in nautical miles between these coordinates and a target.
         // Note: 1 nautical mile == 1 minute
+        if(target == null) {
+            throw new RuntimeException("Null target passed to A_LatitudeLongitude.calculateDistanceNauticalMiles");
+        }
         double degreeMinutes = (this.degrees - target.degrees) * MINUTES_PER_DEGREE;
         double distanceMinutes = this.minutes - target.minutes;
         double secondMinutes = (this.seconds - target.seconds) / SECONDS_PER_MINUTE;
         double totalMinutes = degreeMinutes + distanceMinutes + secondMinutes;
-        return totalMinutes;
+        return Math.abs(totalMinutes);
     }
 
     public int compareTo(A_LatitudeLongitude coordinates) {
         // Compares these coordinates to another by NMEA encoding to the thousandths place.
         // This method is not required
+        if(coordinates == null) {
+            throw new RuntimeException("Null coordinates passed to A_LatitudeLongitude.compareTo");
+        }
         int result = this.degrees - coordinates.degrees;
         if (result == 0) {
             result = this.minutes = coordinates.minutes;
@@ -83,7 +93,7 @@ public abstract class A_LatitudeLongitude implements Comparable<A_LatitudeLongit
     public boolean equals(Object coordinates) {
         // Compares these coordinates to another.
         // This method is not required
-        if (!(coordinates instanceof A_LatitudeLongitude)) {
+        if (!(coordinates instanceof A_LatitudeLongitude) || coordinates == null) {
             return false;
         }
         if (coordinates == this) {

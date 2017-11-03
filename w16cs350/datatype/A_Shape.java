@@ -1,3 +1,4 @@
+/* Konnor Welsch - CS 350 */
 package w16cs350.datatype;
 
 /*
@@ -10,21 +11,27 @@ public abstract class A_Shape {
     protected CoordinatesWorld reference;
     protected CoordinatesDelta deltaStart;
     protected CoordinatesDelta deltaEnd;
-    protected int index;
+    protected Integer index;
 
     public A_Shape(CoordinatesWorld reference,
                    CoordinatesDelta deltaStart,
                    CoordinatesDelta deltaEnd) {
+        if(reference == null || deltaStart == null || deltaEnd == null) {
+            throw new RuntimeException("Null object(s) passed to A_Shape constructor");
+        }
         this.reference = reference;
         this.deltaStart = deltaStart;
         this.deltaEnd = deltaEnd;
-        index = -1;
+        this.index = null;
     }
 
     public A_Shape(CoordinatesWorld reference,
                    CoordinatesDelta deltaStart,
                    CoordinatesDelta deltaEnd,
                    int index) {
+        if(reference == null || deltaStart == null || deltaEnd == null) {
+            throw new RuntimeException("Null object(s) passed to A_Shape constructor");
+        }
         this.reference = reference;
         this.deltaStart = deltaStart;
         this.deltaEnd = deltaEnd;
@@ -43,6 +50,9 @@ public abstract class A_Shape {
 
     public int getIndex() {
         // Gets the optional index.
+        if(this.index == null) {
+            throw new RuntimeException("Index was not set");
+        }
         return this.index;
     }
 
@@ -65,7 +75,7 @@ public abstract class A_Shape {
 
     public boolean hasIndex() {
         // gets whether there is an index.
-        return this.index != -1;
+        return this.index != null;
     }
 
     public abstract CoordinatesDelta interpolateDelta(double distance, boolean isFromAOrB); // Interpolates delta coordinates along the path.
@@ -73,7 +83,7 @@ public abstract class A_Shape {
     public CoordinatesWorld interpolateWorld(double distance, boolean isFromAOrB) {
         // Interpolates world coordinates along the path.
         if (!isOnPath(distance)) {
-            throw new RuntimeException();
+            throw new RuntimeException("Distance is not on path");
         }
         CoordinatesDelta delta = interpolateDelta(distance, isFromAOrB);
         return reference.calculateTarget(delta);
@@ -83,6 +93,9 @@ public abstract class A_Shape {
 
     public void setIndex(int index) {
         // Sets the optional index.
+        if(this.index != null) {
+            throw new RuntimeException("Cannot reset index");
+        }
         this.index = index;
     }
 }

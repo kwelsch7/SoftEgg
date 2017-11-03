@@ -1,3 +1,4 @@
+/* Konnor Welsch - CS 350 */
 package w16cs350.datatype;
 
 public class Angle implements Comparable<Angle> {
@@ -13,16 +14,25 @@ public class Angle implements Comparable<Angle> {
     private double angle;
 
     public Angle(double angle) {
+        if (angle < 0.0 || angle >= 360.0) {
+            throw new RuntimeException("Given angle not on the [0, 360) scale");
+        }
         this.angle = angle;
     }
 
     public Angle add(Angle angle) {
         // Adds an angle to this one and returns a new one with the normalized sum.
+        if(angle == null) {
+            throw new RuntimeException("Null angle passed to Angle.add");
+        }
         double newAngle = normalize(this.angle + angle.angle);
         return new Angle(newAngle);
     }
 
     public int compareTo(Angle angle) {
+        if(angle == null) {
+            throw new RuntimeException("Null angle passed to Angle.compareTo");
+        }
         return (int)(this.angle - angle.angle);
     }
 
@@ -31,8 +41,8 @@ public class Angle implements Comparable<Angle> {
     public static double normalize(double angle) {
         // Normalizes an angle to the interval [0,360).
         double normal = angle;
-        if(angle < 0.0) normal += 360.0;
-        else if(angle >= 360.0) normal -= 360.0;
+        while(angle < 0.0) normal += 360.0;
+        while(angle >= 360.0) normal -= 360.0;
         return normal;
     }
 
@@ -44,6 +54,9 @@ public class Angle implements Comparable<Angle> {
 
     public Angle subtract(Angle angle) {
         // Subtracts an angle from this one and returns a new one with the normalized difference.
+        if(angle == null) {
+            throw new RuntimeException("Null angle passed to Angle.subtract");
+        }
         double newAngle = normalize(this.angle - angle.angle);
         return new Angle(newAngle);
     }

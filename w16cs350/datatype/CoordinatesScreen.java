@@ -1,3 +1,4 @@
+/* Konnor Welsch - CS 350 */
 package w16cs350.datatype;
 
 /*
@@ -17,6 +18,9 @@ public class CoordinatesScreen {
 
     public CoordinatesScreen add(CoordinatesScreen coordinates) {
         // Adds screen coordinates to this one and returns a new one with the sum.
+        if(coordinates == null) {
+            throw new RuntimeException("Null coordinates passed to CoordinatesScreen.add");
+        }
         int newX = this.x + coordinates.x;
         int newY = this.y + coordinates.y;
         return new CoordinatesScreen(newX, newY);
@@ -24,8 +28,8 @@ public class CoordinatesScreen {
 
     public CoordinatesScreen getHalf() {
         // Returns the midpoint between (0,0) and these coordinates as new screen coordinates.
-        int halfX = this.x / 2;
-        int halfY = this.y / 2;
+        int halfX = (int)Math.round(this.x / 2.0);
+        int halfY = (int)Math.round(this.y / 2.0);
         return new CoordinatesScreen(halfX, halfY);
     }
 
@@ -45,6 +49,9 @@ public class CoordinatesScreen {
 
     public CoordinatesScreen subtract(CoordinatesScreen coordinates) {
         // Subtracts screen coordinates from this one and returns a new one with the difference.
+        if(coordinates == null) {
+            throw new RuntimeException("Null coordinates passed to CoordinatesScreen.subtract");
+        }
         int newX = this.x - coordinates.x;
         int newY = this.y - coordinates.y;
         return new CoordinatesScreen(newX, newY);

@@ -53,10 +53,7 @@ public class CoordinatesWorld {
             throw new RuntimeException("Null target passed to CoordinatesWorld.calculateBearing");
         }
         double theta = Math.atan2((target.longitude.convertToNMEA() - this.longitude.convertToNMEA()), (target.latitude.convertToNMEA() - this.latitude.convertToNMEA()));
-        while (theta < 0.0) {
-            theta += (Math.PI * 2);
-        }
-        return new Angle(Math.toDegrees(theta));
+        return new Angle(Angle.normalize(Math.toDegrees(theta)));
     }
 
     public double calculateDistanceMeters(CoordinatesWorld target) {
@@ -96,9 +93,9 @@ public class CoordinatesWorld {
         if(delta == null) {
             throw new RuntimeException("Null delta passed to CoordinatesWorld.calculateTarget");
         }
-        Latitude targetLatitude = this.latitude.add(new Latitude(delta.getY()));
-        Longitude targetLongitude = this.longitude.add(new Longitude((delta.getX())));
-        return new CoordinatesWorld(targetLatitude, targetLongitude);
+        double xNautical = delta.getX() / A_LatitudeLongitude.METERS_PER_NAUTICAL_MILE;
+        double yNautical = delta.getY() / A_LatitudeLongitude.METERS_PER_NAUTICAL_MILE;
+        return new CoordinatesWorld(new Latitude(yNautical + this.latitude.convertToNMEA()), new Longitude(xNautical - this.longitude.convertToNMEA()));
     }
 
     public static double convertMetersToNauticalMiles(double meters) {

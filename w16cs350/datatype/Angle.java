@@ -41,8 +41,8 @@ public class Angle implements Comparable<Angle> {
     public static double normalize(double angle) {
         // Normalizes an angle to the interval [0,360).
         double normal = angle;
-        while(angle < 0.0) normal += 360.0;
-        while(angle >= 360.0) normal -= 360.0;
+        while(normal < 0.0) normal += 360.0;
+        while(normal >= 360.0) normal -= 360.0;
         return normal;
     }
 

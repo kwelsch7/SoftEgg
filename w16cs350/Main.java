@@ -5,8 +5,8 @@ import w16cs350.datatype.*;
 public class Main {
 
     public static void main(String[] args) {
-        CoordinatesDelta coordinatesDelta = new CoordinatesDelta(10, 20);
-        Angle angle = new Angle(45);
+        CoordinatesDelta coordinatesDelta = new CoordinatesDelta(-30, 40);
+        Angle angle = new Angle(135);
 
         CoordinatesDelta target = coordinatesDelta.calculateTarget(angle, 28.284271247461902);
 
